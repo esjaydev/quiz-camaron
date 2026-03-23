@@ -115,20 +115,19 @@ const medidor = document.getElementById("medidor");
 const resultado = document.getElementById("resultado");
 const botonReiniciar = document.getElementById("boton-reiniciar");
 let puntaje = 0;
+let preguntaActualIndex = 0;
 btnIniciar.addEventListener("click", () => {
-    pantallaInicio.style.display = "none";
-    pantallaQuiz.style.display = "flex";
+    empezarQuiz();
 });
-
 function crearPregunta(index) {
     const preguntaActual = preguntas[index];
     const contenedorPregunta = document.createElement("div");
     contenedorPregunta.className = "pregunta";
     contenedorPregunta.id = "pregunta-" + index;
+    contenedorPregunta.dataset.puntos = 0;
 
     const tituloPregunta = document.createElement("h3");
     tituloPregunta.textContent = preguntaActual.pregunta;
-    let puntajePreguntaActual = 0
     const contenedorOpciones = document.createElement("div");
     contenedorOpciones.className = "opciones";
     preguntaActual.opciones.forEach(opcion => {
@@ -136,7 +135,9 @@ function crearPregunta(index) {
         boton.className = "opcion";
         boton.textContent = opcion.texto;
         boton.addEventListener("click", () => {
-            puntajePreguntaActual = opcion.puntos;
+            contenedorPregunta.dataset.puntos = opcion.puntos;
+            deseleccionarOtrasOpciones(contenedorPregunta);
+            boton.classList.add("seleccionada");
         });
         contenedorOpciones.appendChild(boton);
     });
@@ -146,13 +147,17 @@ function crearPregunta(index) {
     const contenedorNavegacion = document.createElement("div");
     contenedorNavegacion.className = "contenedor-navegacion";
 
-    if (index < preguntas.length - 1) {
-        crearBotonNext(contenedorNavegacion);
-    }
     if (index > 0) {
         crearBotonPrev(contenedorNavegacion);
     }
+    if (index < preguntas.length - 1) {
+        crearBotonNext(contenedorNavegacion);
+    }
+    if (index === preguntas.length - 1) {
+        crearBotonFinal(contenedorNavegacion);
+    }
     contenedorPregunta.appendChild(contenedorNavegacion);
+    contenedorPregunta.style.display = "none";
     pantallaQuiz.appendChild(contenedorPregunta);
 }
 function crearBotonNext(parent) {
@@ -174,9 +179,83 @@ function crearBotonPrev(parent) {
     parent.appendChild(botonPrev);
 }
 function siguientePregunta() {
-    console.log('Cambia a siguiente pregunta...');
+    ocultarPregunta(preguntaActualIndex);
+    preguntaActualIndex++;
+    mostrarPregunta(preguntaActualIndex);
 }
-function preguntaActual() {
-    console.log('Cambia a pregunta anterior...');
+function preguntaAnterior() {
+    ocultarPregunta(preguntaActualIndex);
+    preguntaActualIndex--;
+    mostrarPregunta(preguntaActualIndex);
 }
-crearPregunta(0);
+function empezarQuiz() {
+    pantallaInicio.style.display = "none";
+    pantallaQuiz.style.display = "flex";
+    for (let i = 0; i < preguntas.length; i++) {
+        crearPregunta(i);
+    }
+    mostrarPregunta(preguntaActualIndex);
+}
+function mostrarPregunta(index) {
+    const contenedorPregunta = document.getElementById("pregunta-" + index);
+    contenedorPregunta.style.display = "block";
+}
+function ocultarPregunta(index) {
+    const contenedorPregunta = document.getElementById("pregunta-" + index);
+    contenedorPregunta.style.display = "none";
+}
+function crearBotonFinal(parent) {
+    const botonFinal = document.createElement("button");
+    botonFinal.className = "boton-navegacion";
+    botonFinal.textContent = "Finalizar";
+    botonFinal.addEventListener("click", () => {
+        finalizarQuiz();
+    });
+    parent.appendChild(botonFinal);
+}
+function finalizarQuiz() {
+    pantallaQuiz.style.display = "none";
+    pantallaFinal.style.display = "flex";
+    calcularResultados();
+}
+function calcularResultados() {
+    let puntajeTotal = 0;
+    const preguntas = document.querySelectorAll(".pregunta");
+    preguntas.forEach(pregunta => {
+        puntajeTotal += parseInt(pregunta.dataset.puntos);
+    });
+    console.log(puntajeTotal);
+
+    switch (true) {
+        case puntajeTotal <= 5:
+            resultado.innerText = "No eres camarón, 0% de hecho...";
+            break;
+        case puntajeTotal < 10:
+            resultado.innerText = "No eres un camarón ni por poquito, te salvaste de ser ceviche.";
+            break;
+        case puntajeTotal >= 10 && puntajeTotal < 15:
+            resultado.innerText = "No eres un camarón, pero tienes potencial ¿Dentro de una Maruchán, quizás?";
+            break;
+        case puntajeTotal >= 15 && puntajeTotal < 20:
+            resultado.innerText = "No eres un camarón, pero cuidado por donde nadas.";
+            break;
+        case puntajeTotal >= 20 && puntajeTotal < 30:
+            resultado.innerText = "No eres un camarón, pero cuida tu postura.";
+            break;
+        case puntajeTotal >= 30 && puntajeTotal <= 40:
+            resultado.innerText = "¡Eres un camarón!";
+            break;
+        case puntajeTotal > 40:
+            resultado.innerText = "¡Eres un camarón y te lleva la corriente!";
+            break;
+        default:
+            resultado.innerText = "hubo un error mamahuevo";
+            break;
+    }
+}
+function deseleccionarOtrasOpciones(contenedorPregunta) {
+    const opciones = contenedorPregunta.querySelectorAll(".opcion");
+    opciones.forEach(opcion => {
+        opcion.classList.remove("seleccionada");
+    });
+}
