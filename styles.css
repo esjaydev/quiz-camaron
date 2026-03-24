@@ -53,7 +53,7 @@
 
 body {
     font-family: "Fredoka", sans-serif;
-    background-color: var(--naranja-95);
+    background-color: var(--naranja-53);
     font-size: 20px;
 }
 
@@ -65,12 +65,17 @@ body {
     justify-content: center;
     height: 100%;
     text-align: center;
+    background-color: white;
+    padding: 2rem;
+    corner-shape: scoop;
+    border-radius: 2rem;
+    box-shadow: -10px 10px 0px var(--naranja-31);
 }
 
 main {
     width: 100%;
     height: 100dvh;
-    padding: 1rem;
+    padding: 2rem;
 }
 
 h1 {
@@ -102,9 +107,8 @@ h3 {
 #boton-iniciar {
     border: none;
     padding: 16px;
-    border-radius: 1rem;
     background-color: var(--naranja-53);
-    box-shadow: 0 5px 0px var(--naranja-31);
+    box-shadow: -10px 10px 0px var(--naranja-31);
     color: white;
     font-weight: bold;
     font-size: 24px;
@@ -182,4 +186,29 @@ h3 {
 .seleccionada {
     background-color: var(--naranja-53);
     color: white;
+}
+
+.fondo {
+    background-image:
+        url('./assets/camaron.png'),
+        url('./assets/camaron.png');
+
+    background-position: 0 0,
+        50px 50px;
+
+    background-size:
+        100px 100px;
+
+    background-repeat: repeat;
+    animation: movePattern 10s linear infinite;
+}
+
+@keyframes movePattern {
+    from {
+        background-position: 0 0, 50px 50px;
+    }
+
+    to {
+        background-position: 100px 100px, 150px 150px;
+    }
 }
