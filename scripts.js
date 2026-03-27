@@ -108,6 +108,7 @@ const preguntas = [
 const btnIniciar = document.getElementById("boton-iniciar");
 const pantallaInicio = document.querySelector(".pantalla-inicio");
 const pantallaQuiz = document.querySelector(".pantalla-quiz");
+const contenedorQuiz = document.querySelector(".contenedor-quiz")
 const pantallaFinal = document.querySelector(".pantalla-final");
 const textoPregunta = document.getElementById("texto-pregunta");
 const opciones = document.querySelector(".opciones");
@@ -158,7 +159,7 @@ function crearPregunta(index) {
     }
     contenedorPregunta.appendChild(contenedorNavegacion);
     contenedorPregunta.style.display = "none";
-    pantallaQuiz.appendChild(contenedorPregunta);
+    contenedorQuiz.appendChild(contenedorPregunta);
 }
 function crearBotonNext(parent) {
     const botonNext = document.createElement("button");

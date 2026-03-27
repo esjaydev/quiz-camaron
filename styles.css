@@ -186,6 +186,10 @@ h3 {
 .seleccionada {
     background-color: var(--naranja-53);
     color: white;
+    &:hover{
+        background-color: var(--naranja-53);
+        color: white;
+    }
 }
 
 .fondo {
@@ -211,4 +215,13 @@ h3 {
     to {
         background-position: 100px 100px, 150px 150px;
     }
+}
+.contenedor-medidor{
+    width: 100%;
+    margin-top: 1rem;
+}
+#medidor{
+    appearance: none;
+    height: 50px;
+    width: 100%;
 }
