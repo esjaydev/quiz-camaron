@@ -111,6 +111,21 @@ const resultado = document.getElementById("resultado");
 const botonReiniciar = document.getElementById("boton-reiniciar");
 let puntaje = 0;
 let preguntaActualIndex = 0;
+let intervaloContador;
+let tiempoContador = 0;
+
+function iniciarContador() {
+    clearInterval(intervaloContador);
+    tiempoContador = 0;
+    intervaloContador = setInterval(() => {
+        tiempoContador++;
+    }, 1000);
+}
+
+function detenerYObtenerContador() {
+    clearInterval(intervaloContador);
+    return tiempoContador;
+}
 btnIniciar.addEventListener("click", () => {
     empezarQuiz();
 });
@@ -135,7 +150,16 @@ function crearPregunta(index) {
     preguntaActual.opciones.forEach(opcion => {
         const boton = crearOpcion(opcion)
         boton.addEventListener("click", () => {
-            contenedorPregunta.dataset.puntos = opcion.puntos;
+            const tiempoTomado = detenerYObtenerContador();
+            contenedorPregunta.dataset.tiempo = tiempoTomado;
+            console.log(`Tiempo para responder: ${tiempoTomado} segundos`);
+
+            let puntosObtenidos = opcion.puntos;
+            if (tiempoTomado > 7) {
+                puntosObtenidos += 5;
+            }
+            contenedorPregunta.dataset.puntos = puntosObtenidos;
+
             deseleccionarOtrasOpciones(contenedorPregunta);
             boton.classList.add("seleccionada");
             if (preguntaRespondida == false) {
@@ -209,15 +233,18 @@ function preguntaAnterior() {
 function empezarQuiz() {
     pantallaInicio.style.display = "none";
     pantallaFinal.style.display = "none";
+    pantallaQuiz.style.scale = '0'
     pantallaQuiz.style.display = "flex";
     for (let i = 0; i < preguntas.length; i++) {
         crearPregunta(i);
     }
     mostrarPregunta(preguntaActualIndex);
+    pantallaQuiz.style.scale = '1'
 }
 function mostrarPregunta(index) {
     const contenedorPregunta = document.getElementById("pregunta-" + index);
     contenedorPregunta.style.display = "block";
+    iniciarContador();
 }
 function ocultarPregunta(index) {
     const contenedorPregunta = document.getElementById("pregunta-" + index);
@@ -237,10 +264,12 @@ function crearBotonFinal(parent) {
 function finalizarQuiz() {
     pantallaQuiz.style.transition = "opacity 2000ms";
     pantallaQuiz.style.opacity = "0";
+    pantallaFinal.style.display = "flex";
+    pantallaFinal.style.scale = '0'
     setTimeout(() => {
         pantallaQuiz.style.opacity = "1";
         pantallaQuiz.style.display = "none";
-        pantallaFinal.style.display = "flex";
+        pantallaFinal.style.scale = '1'
     }, 2000);
     calcularResultados();
 }
@@ -310,13 +339,16 @@ function activarBotonFinal() {
     }
 }
 function resetQuiz() {
-    ocultarPregunta(preguntaActualIndex);
-    preguntaActualIndex = 0;
-    mostrarPregunta(preguntaActualIndex);
-    contenedorQuiz.replaceChildren();
-    empezarQuiz()
-    puntaje = 0;
-    progreso = 0;
-    medidor.style.width = progreso + "%";
+    pantallaFinal.style.scale = '0'
+    setTimeout(() => {
+        ocultarPregunta(preguntaActualIndex);
+        preguntaActualIndex = 0;
+        mostrarPregunta(preguntaActualIndex);
+        contenedorQuiz.replaceChildren();
+        empezarQuiz()
+        puntaje = 0;
+        progreso = 0;
+        medidor.style.width = progreso + "%";
+    }, 1000);
 }
 botonReiniciar.addEventListener("click", resetQuiz);
