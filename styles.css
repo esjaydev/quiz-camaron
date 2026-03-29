@@ -52,24 +52,72 @@
 }
 
 body {
-    font-family: "Fredoka", sans-serif;
+    font-family: "Original Surfer", sans-serif;
     background-color: var(--naranja-53);
     font-size: 20px;
 }
 
 .pantalla-inicio,
-.pantalla-quiz {
+.pantalla-quiz,
+.pantalla-final {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: fit-content;
     height: 100%;
     text-align: center;
-    background-color: white;
-    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    padding: 3rem 2rem;
     corner-shape: scoop;
     border-radius: 2rem;
     box-shadow: -10px 10px 0px var(--naranja-31);
+}
+
+.pantalla-inicio {
+    h1 {
+        font-family: "Underdog", sans-serif;
+        font-size: clamp(3.5rem, 5vw, 5.61rem);
+        color: var(--naranja-53);
+    }
+}
+
+#resultado {
+    font-size: clamp(2.5rem, 5vw, 3rem);
+    margin-bottom: 2rem;
+    color: var(--naranja-10);
+}
+
+.pantalla-final {
+    h3 {
+        font-family: "Underdog", sans-serif;
+        color: var(--naranja-53);
+        font-size: clamp(1rem, 5vw, 2rem);
+    }
+
+    button {
+        background-color: var(--naranja-53);
+        color: white;
+        font-size: 24px;
+        padding: 1rem 2rem;
+        corner-shape: scoop;
+        border-radius: 1rem;
+        border: none;
+        font-family: inherit;
+        cursor: pointer;
+        transition: 150ms;
+        border: 2px solid var(--naranja-53);
+
+        &:hover {
+            background-color: white;
+            color: var(--naranja-53);
+        }
+
+        &:active {
+            transform: translateY(5px);
+        }
+    }
 }
 
 main {
@@ -86,9 +134,9 @@ h1 {
 }
 
 h3 {
-    font-size: 41.47px;
+    font-size: clamp(2rem, 5vw, 3rem);
     line-height: 1;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     color: light-dark(var(--naranja-21), var(--naranja-95));
 }
 
@@ -108,7 +156,6 @@ h3 {
     border: none;
     padding: 16px;
     background-color: var(--naranja-53);
-    box-shadow: -10px 10px 0px var(--naranja-31);
     color: white;
     font-weight: bold;
     font-size: 24px;
@@ -117,10 +164,17 @@ h3 {
     margin-top: 5rem;
     width: 100%;
     transition: 150ms;
+    corner-shape: scoop;
+    border-radius: 1rem;
+    border: 2px solid var(--naranja-53);
+
+    &:hover {
+        background-color: white;
+        color: var(--naranja-53);
+    }
 
     &:active {
         transform: translateY(5px);
-        box-shadow: 0 0px 0px var(--naranja-31);
     }
 }
 
@@ -131,8 +185,8 @@ h3 {
 }
 
 .opcion {
-    border: 1px solid var(--naranja-63);
-    padding: 16px;
+    border: 2px solid var(--naranja-63);
+    padding: 0.5rem 2rem;
     border-radius: 1rem;
     background-color: white;
     color: var(--naranja-31);
@@ -152,15 +206,14 @@ h3 {
     justify-content: center;
     margin-top: 2rem;
     width: 100%;
-    gap: 1rem;
+    gap: 2rem;
 }
 
 .boton-navegacion {
     border: none;
     padding: 10px 16px;
-    border-radius: 1rem;
     background-color: var(--naranja-53);
-    box-shadow: 0 5px 0px var(--naranja-31);
+    box-shadow: -5px 5px 0px var(--naranja-31);
     color: white;
     font-weight: 500;
     font-size: 24px;
@@ -186,42 +239,76 @@ h3 {
 .seleccionada {
     background-color: var(--naranja-53);
     color: white;
-    &:hover{
+
+    &:hover {
         background-color: var(--naranja-53);
         color: white;
     }
 }
 
+.contenedor-medidor {
+    width: 100%;
+    height: 25px;
+    margin-top: 2rem;
+    corner-shape: scoop;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 2px solid var(--naranja-53)
+}
+
+#medidor {
+    background-color: var(--naranja-53);
+    height: 100%;
+    width: 0%;
+    transition: 150ms;
+}
+
 .fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
     background-image:
-        url('./assets/camaron.png'),
-        url('./assets/camaron.png');
+        url('./assets/camaron-spaced.png'),
+        url('./assets/camaron-spaced.png');
 
-    background-position: 0 0,
-        50px 50px;
+    background-position:
+        0 0,
+        75px 75px;
 
-    background-size:
-        100px 100px;
+    background-size: 150px 150px;
 
-    background-repeat: repeat;
-    animation: movePattern 10s linear infinite;
+    animation: movePattern 20s linear infinite;
 }
 
 @keyframes movePattern {
     from {
-        background-position: 0 0, 50px 50px;
+        background-position: 0 0, 75px 75px;
     }
 
     to {
-        background-position: 100px 100px, 150px 150px;
+        background-position: 300px 300px, 375px 375px;
+        /* diagonal */
     }
 }
-.contenedor-medidor{
-    width: 100%;
-    margin-top: 1rem;
+
+.imagen-pregunta {
+    height: 200px;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    corner-shape: scoop;
 }
-#medidor{
-    appearance: none;
-    height: 50px;
-    width: 100%;
+
+#imagen-resultado {
+    height: 300px;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    corner-shape: scoop;
 }

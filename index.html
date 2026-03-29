@@ -7,7 +7,7 @@
     <title>Quiz para saber si eres Camarón 🦐</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Original+Surfer&family=Peralta&family=Underdog&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -15,21 +15,23 @@
     <main>
         <div class="pantalla-inicio">
             <h1>🦐<br>¿Eres un camarón?</h1>
-            <p>Podrías ser un camarón en secreto, toma el quiz para saberlo.</p>
+            <p id="introduccion"></p>
             <button id="boton-iniciar">Iniciar quiz</button>
         </div>
         <div class="pantalla-quiz">
             <div class="contenedor-quiz"></div>
             <div class="contenedor-medidor">
-                <meter id="medidor" value="0" min="0" max="100"></meter>
+                <div id="medidor"></div>
             </div>
         </div>
         <div class="pantalla-final">
+            <h3>¿Eres un camarón?</h3>
+            <img src="" alt="imagen-resultado" id="imagen-resultado">
             <p id="resultado"></p>
             <button id="boton-reiniciar">Volver a tomar quiz</button>
         </div>
+        <div class="fondo"></div>
     </main>
-    <div class="fondo"></div>
     <script src="scripts.js"></script>
 </body>
 
