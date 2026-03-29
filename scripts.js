@@ -1,6 +1,6 @@
 const preguntas = [
     {
-        pregunta: "¿Cada cuanto tiempo piensas en el mar?",
+        pregunta: "¿Cada cuánto tiempo piensas en el mar?",
         opciones: [{
             texto: "Todos los días",
             puntos: 10,
